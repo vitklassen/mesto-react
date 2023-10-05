@@ -1,24 +1,87 @@
+import React from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
+import PopupWithForm from "./PopupWithForm";
+import ImagePopup from "./ImagePopup";
+import api from "../utils/Api";
 function App() {
+  const [isEditProfilePopupOpen, setEditProfile] = React.useState(false);
+  const [isAddPlacePopupOpen, setAddPlace] = React.useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatar] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({visible: false, link: '', name: ''});
+  const [userName, setUserName] = React.useState("");
+  const [userDescription, setUserDescription] = React.useState("");
+  const [userAvatar, setUserAvatar] = React.useState("");
+  const [cards, setCards] = React.useState([]);
+  const handleEditAvatarClick = () => {
+    setEditAvatar(true);
+  };
+  const handleEditProfileClick = () => {
+    setEditProfile(true);
+  };
+  const handleAddPlaceClick = () => {
+    setAddPlace(true);
+  };
+  const closeAllPopups = () => {
+    setEditAvatar(false);
+    setAddPlace(false);
+    setEditProfile(false);
+    setSelectedCard({visible: false, link: '', name: ''});
+  };
+  const handleCardClick = (link, name) => {
+    setSelectedCard({visible: true, link: link, name: name});
+  }
+  const getUserInfo = () => {
+    api
+      .getUserInfo()
+      .then((response) => {
+        setUserName(response.name);
+        setUserDescription(response.about);
+        setUserAvatar(response.avatar);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const getAllCards = () => {
+    api
+      .getAllCards()
+      .then((response) => {
+        setCards(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  React.useEffect(() => {
+    getUserInfo();
+  }, []);
+  React.useEffect(() => {
+    getAllCards();
+  }, []);
   return (
     <>
       <Header />
-      <Main />
-      <Footer />
-      <div className="popup popup_type_edit">
-        <div className="popup__container popup__container_type_edit">
-          <button className="popup__close-button" type="button"></button>
-          <h2 className="popup__title popup__title_type_edit">
-            Редактировать профиль
-          </h2>
-          <form
-            className="popup__form popup__form_type_edit"
-            name="userForm"
-            method="post"
-            novalidate
-          >
+      <Main
+        userName={userName}
+        userDescription={userDescription}
+        userAvatar={userAvatar}
+        onEditAvatar={handleEditAvatarClick}
+        onEditProfile={handleEditProfileClick}
+        onAddPlace={handleAddPlaceClick}
+        allCards={cards}
+        onCardClick={handleCardClick}
+      />
+      <PopupWithForm
+        name="edit"
+        title="Редактировать профиль"
+        textSaveButton="Сохранить"
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
+        children={
+          <>
             <label className="popup__form-field">
               <input
                 className="popup__input popup__input_name_firstname"
@@ -26,8 +89,8 @@ function App() {
                 name="firstname"
                 placeholder="Ваше имя"
                 required
-                minlength="2"
-                maxlength="40"
+                minLength="2"
+                maxLength="40"
                 id="firstname"
               />
               <span className="popup__error firstname-error">1</span>
@@ -39,28 +102,23 @@ function App() {
                 name="job"
                 placeholder="О себе"
                 required
-                minlength="2"
-                maxlength="200"
+                minLength="2"
+                maxLength="200"
                 id="job"
               />
               <span className="popup__error job-error">1</span>
             </label>
-            <button className="popup__save-button button-style" type="submit">
-              Сохранить
-            </button>
-          </form>
-        </div>
-      </div>
-      <div className="popup popup_type_add">
-        <div className="popup__container popup__container_type_add">
-          <button className="popup__close-button" type="button"></button>
-          <h2 className="popup__title popup__title_type_add">Новое место</h2>
-          <form
-            className="popup__form popup__form_type_add"
-            name="userForm"
-            method="post"
-            novalidate
-          >
+          </>
+        }
+      />
+      <PopupWithForm
+        name="add"
+        title="Новое место"
+        textSaveButton="Создать"
+        isOpen={isAddPlacePopupOpen}
+        onClose={closeAllPopups}
+        children={
+          <>
             <label className="popup__form-field">
               <input
                 className="popup__input popup__input_name_name"
@@ -69,8 +127,8 @@ function App() {
                 placeholder="Название"
                 id="name"
                 required
-                minlength="2"
-                maxlength="30"
+                minLength="2"
+                maxLength="30"
               />
               <span className="popup__error name-error">1</span>
             </label>
@@ -85,42 +143,17 @@ function App() {
               />
               <span className="popup__error link-error">1</span>
             </label>
-            <button className="popup__save-button button-style" type="submit">
-              Создать
-            </button>
-          </form>
-        </div>
-      </div>
-      <div className="popup popup_type_card">
-        <div className="popup__container popup__container_type_card">
-          <button className="popup__close-button" type="button"></button>
-          <img className="popup__photo" />
-          <h2 className="popup__title popup__title_type_card"></h2>
-        </div>
-      </div>
-      <div className="popup popup_type_delete-card">
-        <div className="popup__container popup__container_type_delete-card">
-          <button className="popup__close-button" type="button"></button>
-          <h2 className="popup__title popup__title_type_delete-card">
-            Вы уверены?
-          </h2>
-          <button className="popup__save-button button-style" type="button">
-            Да
-          </button>
-        </div>
-      </div>
-      <div className="popup popup_type_edit-avatar">
-        <div className="popup__container popup__container_type_edit-avatar">
-          <button className="popup__close-button" type="button"></button>
-          <h2 className="popup__title popup__title_type_edit-avatar">
-            Обновить аватар
-          </h2>
-          <form
-            className="popup__form popup__form_type_edit-avatar"
-            name="userForm"
-            method="post"
-            novalidate
-          >
+          </>
+        }
+      />
+      <PopupWithForm
+        name="edit-avatar"
+        title="Обновить аватар"
+        textSaveButton="Сохранить"
+        isOpen={isEditAvatarPopupOpen}
+        onClose={closeAllPopups}
+        children={
+          <>
             <label className="popup__form-field">
               <input
                 className="popup__input popup__input_name_avatarLink"
@@ -132,28 +165,22 @@ function App() {
               />
               <span className="popup__error avatarLink-error">1</span>
             </label>
-            <button className="popup__save-button button-style" type="submit">
-              Сохранить
-            </button>
-          </form>
+          </>
+        }
+      />
+      <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
+      <Footer />
+      <div className="popup popup_type_delete-card">
+        <div className="popup__container popup__container_type_delete-card">
+          <button className="popup__close-button" type="button"></button>
+          <h2 className="popup__title popup__title_type_delete-card">
+            Вы уверены?
+          </h2>
+          <button className="popup__save-button button-style" type="button">
+            Да
+          </button>
         </div>
       </div>
-      <template id="template-elements__element">
-        <div className="elements__element">
-          <button
-            className="elements__delete-button button-style"
-            type="button"
-          ></button>
-          <img className="elements__photo" />
-          <div className="elements__description">
-            <h2 className="elements__title"></h2>
-            <div className="elements__like">
-              <button className="elements__like-button" type="button"></button>
-              <p className="elements__like-count"></p>
-            </div>
-          </div>
-        </div>
-      </template>
     </>
   );
 }
