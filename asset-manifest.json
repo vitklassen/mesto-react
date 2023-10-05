@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "./static/css/main.f4138639.css",
-    "main.js": "./static/js/main.ac77aa99.js",
+    "main.css": "./static/css/main.a9a69081.css",
+    "main.js": "./static/js/main.56af671f.js",
     "static/js/787.5530211c.chunk.js": "./static/js/787.5530211c.chunk.js",
     "static/media/Inter-Medium.woff?v=3.19": "./static/media/Inter-Medium.9053572c46aeb4b16caa.woff",
     "static/media/Inter-Black.woff?v=3.19": "./static/media/Inter-Black.c6938660eec019fefd68.woff",
@@ -18,12 +18,12 @@
     "static/media/profile__avavtar-logo.svg": "./static/media/profile__avavtar-logo.ae1a976ddb506239e9f0.svg",
     "static/media/popup__close-button.svg": "./static/media/popup__close-button.2ceb783afbab75916ddc.svg",
     "static/media/profile__add-button-image.svg": "./static/media/profile__add-button-image.bed8c136e13907f5eefb.svg",
-    "main.f4138639.css.map": "./static/css/main.f4138639.css.map",
-    "main.ac77aa99.js.map": "./static/js/main.ac77aa99.js.map",
+    "main.a9a69081.css.map": "./static/css/main.a9a69081.css.map",
+    "main.56af671f.js.map": "./static/js/main.56af671f.js.map",
     "787.5530211c.chunk.js.map": "./static/js/787.5530211c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f4138639.css",
-    "static/js/main.ac77aa99.js"
+    "static/css/main.a9a69081.css",
+    "static/js/main.56af671f.js"
   ]
 }
