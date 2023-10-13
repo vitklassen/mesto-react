@@ -47,8 +47,8 @@ class Api {
                 'Content-Type': this._header
             },
             body: JSON.stringify({
-                name: userInfo.firstname,
-                about: userInfo.job
+                name: userInfo.name,
+                about: userInfo.about
             })
         })
     }
@@ -97,7 +97,15 @@ class Api {
         })
     }
 
-    editAvatar(url) {
+    changeLikeCardStatus(id, isNoLiked) {
+        if(isNoLiked) {
+            return this.addLike(id);
+        }
+        else {
+            return this.deleteLike(id);
+        }
+    }
+    editAvatar(avatar) {
        return this._sendRequest(`${this._url}users/me/avatar`, {
             method: 'PATCH',
             headers: {
@@ -105,7 +113,7 @@ class Api {
                 'Content-Type': this._header
             },
             body: JSON.stringify({
-                avatar: url
+                avatar: avatar
             })
         })
     }
